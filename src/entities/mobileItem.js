@@ -1,6 +1,8 @@
 /**
  * Represents a Ridesharing, Flying Taxi, Bus, Train
  */
+import geolib from "geolib"
+
 class MobileItem {
     constructor(posLat, posLong) {
         this.posLat = posLat;
