@@ -13,6 +13,7 @@ import './css/pure-min.css'
 import './App.css'
 import './style.css';
 import "./skeleton.css";
+var Api = require('./Api.js');
 
 // fixed parameters for rendering
 var Button = require('react-bootstrap/lib/Button');
@@ -79,6 +80,8 @@ class App extends Component {
     this.state = {
       storageValue: 0,
       web3: null,
+        api: null,
+        mobilityMarketInstance: null
       }
     }
 
@@ -158,7 +161,10 @@ class App extends Component {
               });
 
             //return mobilityMarketInstance.addRideRequest(11,11,12,13, {from: accounts[0], gas: 1000000});
-              return;
+              return this.setState({
+                  mobilityMarketInstance: mobilityMarketInstance,
+                  api: Api(this.state.web3)
+              });
       }).then((result) => {
         // Get the value from the contract to prove it worked.
         return mobilityMarketInstance.getRequest.call(0)
@@ -172,7 +178,7 @@ class App extends Component {
   submitRideRequest = (rider_uuid, current_lat, current_lng, dest_lat, dest_lng) => {
     // todo submit Ride request
 
-    // addRideRequest(....);uint8 destLat, uint8 destLong, uint8 startLat, uint8 startLong
+    //addRideRequest(....);uint8 destLat, uint8 destLong, uint8 startLat, uint8 startLong
   }
 
   render() {
