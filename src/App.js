@@ -25,12 +25,13 @@ const navStyle = {
   left: 0,
   padding: '0px'
 };
-const wellStyles = { width: 600, height: 80 };
+
 var divStyle = {
   padding: "5px",
   margin: "5px",
   align: "left"
 };
+
 var rider_color = [25, 89, 193];
 var driving_color = [244, 164, 66];
 // initial location of rider
@@ -87,7 +88,6 @@ class App extends Component {
 
   _start_request_flow(state) {
       // Inform the rider that things are being requested
-      
       console.log("Starting to request the ride for position: ", rt_location['position']);
       //sleep(2000);
       alert("Starting the request flow and writing into the ETH contract");
@@ -179,21 +179,28 @@ class App extends Component {
     const _update = (data) => {
         this.props.actions.mapview(data);
     }
+
+    var dialog = {
+      width: '400px',
+      height: '750px',
+    };
+
     return (
 
       <div className={classnames('App', className)} style={divStyle} {...props}>
         
         <SkyLight beforeOpen={() => this._start_request_flow(this.state)}
           hideOnOverlayClicked ref={ref => this.simpleDialog1 = ref} title=""
-          afterClose={() => this.simpleDialog2.show()}>
+          afterClose={() => this.simpleDialog2.show()}
+          dialogStyles={dialog} >
           <img src="push.png" alt="miles"/>
         </SkyLight>
         
-        <SkyLight afterClose={() => this.simpleDialog3.show()} hideOnOverlayClicked ref={ref => this.simpleDialog2 = ref} title="">
-          <img src="miles.png" alt="miles"/>
+        <SkyLight afterClose={() => this.simpleDialog3.show()} dialogStyles={dialog}  hideOnOverlayClicked ref={ref => this.simpleDialog2 = ref} title="">
+          <img src="collect.png" alt="miles"/>
         </SkyLight>
         
-        <SkyLight afterClose={() =>this.simpleDialog4.show()} hideOnOverlayClicked ref={ref => this.simpleDialog3 = ref} title="">
+        <SkyLight afterClose={() =>this.simpleDialog4.show()} dialogStyles={dialog}  hideOnOverlayClicked ref={ref => this.simpleDialog3 = ref} title="">
           <svg width="375px" height="667px" viewBox="0 0 375 667" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">\
           <desc>Created with Sketch.</desc>\
           <defs></defs>\
@@ -205,77 +212,72 @@ class App extends Component {
           </svg>
         </SkyLight>
         
-        <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog4 = ref} title="">
-          <img src="collect.png" alt="miles"/>
+        <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog4 = ref} dialogStyles={dialog}  title="">
+          <img src="miles.png" alt="miles"/>
         </SkyLight>
 
         <div className="App-header">
           <h1> real time rider </h1>
         </div>
+        <p>
+        </p>
 
         <button onClick={() => {
           this.simpleDialog1.show();
         }}>Start flow</button>
-
-        <p className="App-intro">
-        </p>
-        <Flex p={2} align='center'>
-        <Box px={2} w={1/4}>
-        </Box>
-        <Box px={2} w={1/4}>
-        </Box>
-        </Flex>
         
         <Geolocation
-      render={({
-        fetchingPosition,
-        position: { coords: { latitude, longitude } = {} } = {},
-        error,
-        getCurrentPosition
-      }) =>
-        <div>
-          <button onClick={getCurrentPosition,  this._logPosition(latitude, longitude)}>Get Position</button>
-          {error &&
+          render={({
+            fetchingPosition,
+            position: { coords: { latitude, longitude } = {} } = {},
+            error,
+            getCurrentPosition
+          }) =>
             <div>
-              {error.message}
+              <button onClick={getCurrentPosition,  this._logPosition(latitude, longitude)}>Get Position</button>
+              {error &&
+                <div>
+                  {error.message}
+                </div>}
+              <pre>
+                Current position: 
+                latitude: {latitude} / 
+                longitude: {longitude}
+              </pre>
             </div>}
-          <pre>
-            Current position: 
-            latitude: {latitude} / 
-            longitude: {longitude}
-          </pre>
-        </div>}
-    />
-    <div className ="Map">
-        <ReactMapGL mapboxApiAccessToken={accessToken}
-          mapStyle="mapbox://styles/mapbox/dark-v9"
-          {...this.props.view.viewport}
-           onViewportChange={this._updateViewport}
-         >
-        <DeckGL
+        />
+        <div className ="Map">
+          <ReactMapGL mapboxApiAccessToken={accessToken}
+            mapStyle="mapbox://styles/mapbox/dark-v9"
+            {...this.props.view.viewport}
+             onViewportChange={this._updateViewport}
+           >
+          <DeckGL
           {...this.props.view.viewport}
           layers={[
            new ScatterplotLayer({
                 id: 'scatterplot-layer',
                 data: [rt_location],
                 radiusScale: 20,
+                getColor: d => [25, 89, 193],
                 outline: false
               }),
            new ScatterplotLayer({
                 id: 'scatterplot-layer',
                 data: provider_locations,
                 radiusScale: 30,
+                getColor: d => [255, 140, 0],
                 outline: false,
               })
            ]}
-        />
-         <div className="nav" style={navStyle}>
-          <NavigationControl onViewportChange={this._updateViewport} />
-        </div>
-      </ReactMapGL>
-    </div>   
-     </div>
-    );
+          />
+          <div className="nav" style={navStyle}>
+            <NavigationControl onViewportChange={this._updateViewport} />
+          </div>
+        </ReactMapGL>
+      </div>   
+    </div>
+  );
   
 }
 }
