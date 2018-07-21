@@ -38,7 +38,7 @@ class MobilityProvider {
             {latitude: destLat, longitude: destLong}
         );
 
-        var tokenAmount = (totalDistance/1000) * 0.1;
+        var tokenAmount = Math.round(totalDistance);
         return tokenAmount;
     }
 }
