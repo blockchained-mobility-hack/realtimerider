@@ -6,7 +6,7 @@ class Api {
     constructor(web3) {
         var that = this;
         // Get accounts.
-        this.state.web3.eth.getAccounts((error, accounts) => {
+        web3.eth.getAccounts((error, accounts) => {
             // Setup some dummy providers
             that.mobilityProviders.push(new MobilityProvider(accounts[1]));
             that.mobilityProviders.push(new MobilityProvider(accounts[2]));

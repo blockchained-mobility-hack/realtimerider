@@ -80,11 +80,12 @@ class App extends Component {
       storageValue: 0,
       web3: null,
         api: null,
-        mobilityMarketInstance: null
+        mobilityMarketInstance: null,
+        accounts: null
       }
     }
 
-  _start_request_flow = () => {
+  _start_request_flow(state) {
       // Inform the rider that things are being requested
       
       console.log("Starting to request the ride for position: ", rt_location['position']);
@@ -92,13 +93,9 @@ class App extends Component {
       alert("Starting the request flow and writing into the ETH contract");
       sleep(1000);
 
-      // Submit the request here 
-      this.submitRideRequest(
-        rider_uuid, 
-        rt_location['position'][1],
-        rt_location['position'][0],
-        dest_lat,
-        dest_lng);
+
+      state.mobilityMarketInstance.addRideRequest(rt_location['position'],rt_location['position'][0],dest_lat,dest_lng, {from: state.accounts[0], gas: 1000000});
+
 
       // Listen to changes
       // TODO 
@@ -144,7 +141,7 @@ class App extends Component {
 
     // Declaring this for later so we can chain functions on SimpleStorage.
     var mobilityMarketInstance;
-
+    var that = this;
     // Get accounts.
     this.state.web3.eth.getAccounts((error, accounts) => {
           mobilityMarket.deployed().then((instance) => {
@@ -160,9 +157,10 @@ class App extends Component {
               });
 
             //return mobilityMarketInstance.addRideRequest(11,11,12,13, {from: accounts[0], gas: 1000000});
-              return this.setState({
+              return that.setState({
                   mobilityMarketInstance: mobilityMarketInstance,
-                  api: Api(this.state.web3)
+                  api: new Api(that.state.web3),
+                  accounts: accounts
               });
       }).then((result) => {
         // Get the value from the contract to prove it worked.
@@ -172,12 +170,6 @@ class App extends Component {
         return this.setState({ request: result[1].c[0] });
       });
     })
-  }
-
-  submitRideRequest = (rider_uuid, current_lat, current_lng, dest_lat, dest_lng) => {
-    // todo submit Ride request
-
-    //addRideRequest(....);uint8 destLat, uint8 destLong, uint8 startLat, uint8 startLong
   }
 
   render() {
@@ -192,7 +184,7 @@ class App extends Component {
 
       <div className={classnames('App', className)} style={divStyle} {...props}>
         
-        <SkyLight beforeOpen={this._start_request_flow} 
+        <SkyLight beforeOpen={() => this._start_request_flow(this.state)}
           hideOnOverlayClicked ref={ref => this.simpleDialog1 = ref} title=""
           afterClose={() => this.simpleDialog2.show()}>
           <img src="push.png" alt="miles"/>
