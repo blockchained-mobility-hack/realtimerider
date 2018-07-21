@@ -7,8 +7,9 @@ class Api {
         var proposals = [];
 
         // Match providers by cheapest
-        for(var mobilityProvider in this.mobilityProviders) {
-            tokenAmount = mobilityProvider.requestProposal(startLat, startLong, destLat, destLong);
+        for(var index in this.mobilityProviders) {
+            var mobilityProvider = this.mobilityProviders[index];
+            var tokenAmount = mobilityProvider.requestProposal(startLat, startLong, destLat, destLong);
             proposals.push(mobilityProvider.providerAccountAddress, tokenAmount);
 
         }
