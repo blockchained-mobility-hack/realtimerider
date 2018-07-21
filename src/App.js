@@ -90,21 +90,12 @@ class App extends Component {
   _start_request_flow(that) {
       // Inform the rider that things are being requested
       console.log("Starting to request the ride for position: ", rt_location['position']);
-      //sleep(2000);
       alert("Starting the request flow and writing into the ETH contract");
       sleep(1000);
 
-
-      that.state.mobilityMarketInstance.addRideRequest(Math.round(rt_location['position']), Math.round(rt_location['position'][0]),
+      that.state.mobilityMarketInstance.addRideRequest(Math.round(rt_location['position'][1]), Math.round(rt_location['position'][0]),
           dest_lat,dest_lng, {from: that.state.accounts[0], gas: 1000000});
 
-
-
-      // Listen to changes
-      // TODO 
-
-      // Display the correct match
-      var eta_minutes = 2.4;
     }
 
   _updateViewport = (viewport) => {
