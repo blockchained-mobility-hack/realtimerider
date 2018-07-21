@@ -48,21 +48,31 @@ class App extends Component {
     mobilityMarket.setProvider(this.state.web3.currentProvider)
 
     // Declaring this for later so we can chain functions on SimpleStorage.
-    var mobilityMarketInstance
+    var mobilityMarketInstance;
 
     // Get accounts.
     this.state.web3.eth.getAccounts((error, accounts) => {
           mobilityMarket.deployed().then((instance) => {
-          mobilityMarketInstance = instance
-              
-          return;
+            mobilityMarketInstance = instance;
+            console.log(accounts[0]);
+
+              var event = mobilityMarketInstance.RequestAdded({});
+
+              // watch for changes
+              event.watch(function(error, result){
+                  if (!error)
+                      console.log(result);
+              });
+
+            //return mobilityMarketInstance.addRideRequest(11,11,12,13, {from: accounts[0], gas: 1000000});
+              return;
       }).then((result) => {
         // Get the value from the contract to prove it worked.
-        //return simpleStorageInstance.get.call(accounts[0])
+        return mobilityMarketInstance.getRequest.call(0)
       }).then((result) => {
         // Update state with the result.
-        //return this.setState({ storageValue: result.c[0] })
-      })
+        return this.setState({ request: result[1].c[0] });
+      });
     })
   }
 
@@ -81,7 +91,7 @@ class App extends Component {
               <h2>Smart Contract Example</h2>
               <p>If your contracts compiled and migrated successfully, below will show a stored value of 5 (by default).</p>
               <p>Try changing the value stored on <strong>line 59</strong> of App.js.</p>
-              <p>The stored value is: {this.state.storageValue}</p>
+              <p>The stored value is: {this.state.request}</p>
             </div>
           </div>
         </main>

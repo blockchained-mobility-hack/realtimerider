@@ -8,4 +8,5 @@ contract('MobilityMarket', (accounts) => {
         //assert.equal(destLat, 0,
         //    "default value was zero")
     })
+
 });

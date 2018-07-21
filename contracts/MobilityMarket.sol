@@ -24,8 +24,8 @@ contract MobilityMarket {
 
     }
 
-    event RequestAdded(address, uint, uint, uint, uint, uint);
-    event ProposalAdded(uint, address, uint);
+    event RequestAdded(address indexed from, uint destLat, uint destLong, uint startLat, uint startLong, uint id);
+    event ProposalAdded(uint requestId, address provider, uint bidPrice);
 
     function addRideRequest(uint8 destLat, uint8 destLong, uint8 startLat, uint8 startLong) public returns (uint requestId) {
         requestId = numRequests++;
@@ -33,9 +33,10 @@ contract MobilityMarket {
         requests[requestId] = request;
 
         emit RequestAdded(request.rider, request.destLat, request.destLong, request.startLat, request.startLong, request.id);
+        return requestId;
     }
 
-    function getRequest(uint8 requestId) returns (address, uint, uint, uint, uint, uint) {
+    function getRequest(uint8 requestId) returns (address rider, uint destLat, uint destLong, uint startLat, uint startLong, uint id) {
         Request storage request = requests[requestId];
         return (request.rider, request.destLat, request.destLong, request.startLat, request.startLong, request.id);
     }
