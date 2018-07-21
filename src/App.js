@@ -152,8 +152,7 @@ class App extends Component {
 
               // watch for changes
               event.watch(function(error, result){
-                  if (!error)
-                      console.log(result);
+                  that.state.api.getProposals(0, 0, 0, 0);
               });
 
             //return mobilityMarketInstance.addRideRequest(11,11,12,13, {from: accounts[0], gas: 1000000});
