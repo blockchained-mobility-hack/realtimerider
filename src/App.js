@@ -81,25 +81,24 @@ class App extends Component {
       storageValue: 0,
       web3: null,
         api: null,
-        mobilityMarketInstance: null
+        mobilityMarketInstance: null,
+        accounts: null,
+        requestId: null
       }
     }
 
-  _start_request_flow = () => {
-
+  _start_request_flow(that) {
       // Inform the rider that things are being requested
       console.log("Starting to request the ride for position: ", rt_location['position']);
       //sleep(2000);
       alert("Starting the request flow and writing into the ETH contract");
       sleep(1000);
 
-      // Submit the request here 
-      this.submitRideRequest(
-        rider_uuid, 
-        rt_location['position'][1],
-        rt_location['position'][0],
-        dest_lat,
-        dest_lng);
+
+      that.state.mobilityMarketInstance.addRideRequest(Math.round(rt_location['position']), Math.round(rt_location['position'][0]),
+          dest_lat,dest_lng, {from: that.state.accounts[0], gas: 1000000});
+
+
 
       // Listen to changes
       // TODO 
@@ -145,25 +144,52 @@ class App extends Component {
 
     // Declaring this for later so we can chain functions on SimpleStorage.
     var mobilityMarketInstance;
-
+    var that = this;
     // Get accounts.
     this.state.web3.eth.getAccounts((error, accounts) => {
           mobilityMarket.deployed().then((instance) => {
             mobilityMarketInstance = instance;
             console.log(accounts[0]);
 
-              var event = mobilityMarketInstance.RequestAdded({});
-
+              var requestAddedEvent = mobilityMarketInstance.RequestAdded({});
               // watch for changes
-              event.watch(function(error, result){
-                  if (!error)
-                      console.log(result);
+              requestAddedEvent.watch(function(error, result){
+
+                  var requestId = result.args['id'].c[0];
+                  var proposals = that.state.api.getProposals(result.args['startLat']['c'][0], result.args['startLong']['c'][0],
+                      result.args['destLat']['c'][0], result.args['destLong']['c'][0]);
+
+                  for(var index = 0; index < proposals.length; index++) {
+                      var proposal = proposals[index];
+                      that.state.mobilityMarketInstance.addProposal(requestId, proposal.tokenAmount, {
+                          from: proposal.providerAccountAddress,
+                          gas: 1000000
+                      });
+                  }
+              });
+
+              var proposalAddedEvent = mobilityMarketInstance.ProposalAdded({});
+              // watch for changes
+              proposalAddedEvent.watch(function(error, result){
+                  //address provider, uint tokenAmount, proposalId
+                  var provider = result.args['provider'];
+                  var tokenAmount = result.args['tokenAmount']['c'][0];
+                  var requestId = result.args['requestId']['c'][0];
+                  var providerId = result.args['proposalId'];
+
+                  // Missing UI selection
+                  that.state.mobilityMarketInstance.submitProposal(requestId, providerId, {
+                      from: that.state.accounts[1],
+                      gas: 1000000
+                  });
+
               });
 
             //return mobilityMarketInstance.addRideRequest(11,11,12,13, {from: accounts[0], gas: 1000000});
-              return this.setState({
+              return that.setState({
                   mobilityMarketInstance: mobilityMarketInstance,
-                  api: Api(this.state.web3)
+                  api: new Api(that.state.web3),
+                  accounts: accounts
               });
       }).then((result) => {
         // Get the value from the contract to prove it worked.
@@ -173,12 +199,6 @@ class App extends Component {
         return this.setState({ request: result[1].c[0] });
       });
     })
-  }
-
-  submitRideRequest = (rider_uuid, current_lat, current_lng, dest_lat, dest_lng) => {
-    // todo submit Ride request
-
-    //addRideRequest(....);uint8 destLat, uint8 destLong, uint8 startLat, uint8 startLong
   }
 
   render() {
@@ -199,7 +219,7 @@ class App extends Component {
 
       <div className={classnames('App', className)} style={divStyle} {...props}>
         
-        <SkyLight beforeOpen={this._start_request_flow} 
+        <SkyLight beforeOpen={() => this._start_request_flow(this)}
           hideOnOverlayClicked ref={ref => this.simpleDialog1 = ref} title=""
           afterClose={() => this.simpleDialog2.show()}
           dialogStyles={dialog} >
