@@ -5,8 +5,8 @@ const initialState = {
         selectedRowId: 0,
         locations : [{position:[-122.4193, 37.7751]},{position:[-122.4374, 37.7574]}],
         viewport: {
-                      width: 1500,
-                      height: 1500,
+                      width: 2000,
+                      height: 1000,
                       latitude: 48.1379,
                       longitude: 11.5720,
                       zoom: 14
@@ -25,8 +25,8 @@ const display = (state = initialState, action) => {
                 selectedRowId: 0,
                 locations : action.data[0],
                     viewport: {
-                      width: 1500,
-                      height: 1500,
+                      width: 2000,
+                      height: 1000,
                       latitude: (action.data[0][0].position[1] + action.data[0][1].position[1])/2.0,
                       longitude: (action.data[0][0].position[0] + action.data[0][1].position[0])/2.0,
                       zoom: 12
@@ -41,8 +41,8 @@ const display = (state = initialState, action) => {
                 selectedRowId: 0,
                 locations : state.view.locations,
                     viewport: {
-                      width: 1500,
-                      height: 1500,
+                      width: 2000,
+                      height: 1000,
                       latitude: action.data.latitude,
                       longitude: action.data.longitude,
                       zoom: action.data.zoom

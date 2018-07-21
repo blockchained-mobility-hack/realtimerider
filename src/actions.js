@@ -1,5 +1,3 @@
-
-
 export const MAPVIEW_START = "MAPVIEW_START";
 export const mapview_start = (data) => {
     console.log("mapview start fired")
@@ -13,7 +11,6 @@ export const mapview = (data) => {
         dispatch(mapview_start(data));
         }
 }
-
 
 export const MAPVIEW_UPDATE = "MAPVIEW_UPDATE";
 export const mapview_update = (data) => {
