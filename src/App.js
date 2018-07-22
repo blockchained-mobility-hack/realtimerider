@@ -99,8 +99,7 @@ class App extends Component {
     }
 
   _chooseProvider = (provider_choice) => {
-      console.log("chosen provider " + provider_choice);
-
+      alert("Chosen provider " + provider_choice + " with award amount: NA");
 
   }
 

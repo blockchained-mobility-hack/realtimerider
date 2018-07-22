@@ -34,7 +34,6 @@ const display = (state = initialState, action) => {
                     arcs : action.data[1]
             };
 
-            console.log("starting updating map" + JSON.stringify(new_state));
             return { ...state, view: new_state }
         case MAPVIEW_UPDATE:
             var new_state = {
@@ -49,7 +48,6 @@ const display = (state = initialState, action) => {
                     },
                     arcs : state.view.arcs
             };
-            console.log("starting updating map" + JSON.stringify(new_state));
             return { ...state, view: new_state }
         default:
             return state
