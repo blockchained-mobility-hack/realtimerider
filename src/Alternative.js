@@ -372,7 +372,7 @@ class Alternative extends Component {
                             this._increaseStage();
                             this._start_request_flow(this);
                             //this.simpleDialog1.show();
-                        }}>Start flow</button>
+                        }}>Next screen </button>
 
                         <AppFlow flowstatus={this.state.flowstatus}/>
                     </Box>
