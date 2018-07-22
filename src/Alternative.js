@@ -79,6 +79,33 @@ function sleep(milliseconds) {
     }
 }
 
+function AppFlow(flowstatus) {
+    console.log("Flowstatus" + flowstatus)
+         if (flowstatus === "stage2") {
+            return 
+                <div>
+                    <img src="top.png" alt="miles"/>
+                    <img src="uber.png" alt="miles"/>
+                    
+                    <img src="lyft.png" alt="miles"/>
+                    <img src="low.png" alt="miles"/>
+                </div>
+          } else if (flowstatus === "stage3") {
+            return 
+                <div>
+                    <img src="uberchoice.png" alt="miles"/>
+                </div>
+          } else if (flowstatus === "stage4") {
+            return 
+                <div>
+                    <img src="miles.png" alt="miles"/>
+                </div>
+          }
+          return <div>
+                    <img src="push.png" alt="miles"/>
+                </div>;
+    }
+
 class Alternative extends Component {
     constructor(props) {
         super(props)
@@ -91,7 +118,8 @@ class Alternative extends Component {
             accounts: null,
             requestId: null,
             proposals: [],
-            tokenBalance: null
+            tokenBalance: null,
+            flowstatus: 'stage1'
         }
     }
 
@@ -272,10 +300,10 @@ class Alternative extends Component {
                 </ul>
             </div>
         );
+
         return (
 
             <div className={classnames('App', className)} style={divStyle} {...props}>
-
                 <SkyLight beforeOpen={() => this._start_request_flow(this)}
                           hideOnOverlayClicked ref={ref => this.simpleDialog1 = ref} title=""
                           afterClose={() => this.simpleDialog2.show()}
@@ -286,6 +314,7 @@ class Alternative extends Component {
                 <SkyLight dialogStyles={dialog}  hideOnOverlayClicked ref={ref => this.simpleDialog2 = ref} title="">
                     <img src="top.png" alt="miles"/>
                     <button onClick={() => this.simpleDialogUber.show()}><img src="uber.png" alt="miles"/></button>
+                    
                     <button onClick={() => this.simpleDialogLyft.show()}><img src="lyft.png" alt="miles"/></button>
                     <img src="low.png" alt="miles"/>
                 </SkyLight>
@@ -321,14 +350,22 @@ class Alternative extends Component {
                     Current token balance: {this.state.tokenBalance}<br/><br/>
                 </div>
 
-                <div>
-                    <Proposals proposals={this.state.proposals} />
-                </div>
+                <Flex p={2} align='top' >
+                    <Box px={2} w={1/2}>
+                        <div>
+                            Proposals
+                            <Proposals proposals={this.state.proposals} />
+                        </div>
+                    </Box>
+                    <Box px={2} w={1/2}>
+                        <button onClick={() => {
+                            this._start_request_flow();
+                            //this.simpleDialog1.show();
+                        }}>Start flow</button>
 
-                <button onClick={() => {
-                    this.simpleDialog1.show();
-                }}>Start flow</button>
-
+                        <AppFlow flowstatus={this.state.flowstatus}/>
+                    </Box>
+                </Flex>
                 <Geolocation
                     render={({
                                  fetchingPosition,
