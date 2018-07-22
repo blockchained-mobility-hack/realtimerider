@@ -10,7 +10,7 @@ class Api {
         // Get accounts.
         web3.eth.getAccounts((error, accounts) => {
             // Setup some dummy providers
-            var provider1 = new MobilityProvider(accounts[1], "DriveNow");
+            var provider1 = new MobilityProvider(accounts[1], "Lyft");
             var provider2 = new MobilityProvider(accounts[2], "Uber");
 
             //Define some car data

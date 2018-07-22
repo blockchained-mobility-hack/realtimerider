@@ -67,7 +67,7 @@ for (var i = 0; i < num_cars; i++) {
 }
 
 
-var providerList = [ 'DriveNow', 'Uber', 'Lyft'];
+var providerList = [ 'Uber', 'Lyft'];
 
 // utils
 function sleep(milliseconds) {
@@ -219,7 +219,7 @@ class Alternative extends Component {
                     var proposalId = result.args['proposalId']['c'][0];
 
                     var proposals = that.state.proposals;
-                    var providerIndex = proposalId % 3;
+                    var providerIndex = proposalId % 2;
 
                     proposals.push(new Proposal(provider, tokenAmount, providerList[providerIndex], proposalId, requestId));
                     that.setState({
