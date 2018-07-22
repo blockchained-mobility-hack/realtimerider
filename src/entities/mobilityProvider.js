@@ -8,8 +8,9 @@ class MobilityProvider {
     mobileItems = [];
     providerAccountAddress = "";
 
-    constructor(providerAccountAddress) {
+    constructor(providerAccountAddress, providerName) {
         this.providerAccountAddress = providerAccountAddress;
+        this.providerName = providerName;
     }
 
     addMobileItem(mobileItem) {
@@ -38,7 +39,7 @@ class MobilityProvider {
             {latitude: destLat, longitude: destLong}
         );
 
-        var tokenAmount = Math.round(totalDistance);
+        var tokenAmount = Math.random() * Math.round(totalDistance) + Math.round(totalDistance)*0.8;
         return tokenAmount;
     }
 }
