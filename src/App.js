@@ -90,21 +90,12 @@ class App extends Component {
   _start_request_flow(that) {
       // Inform the rider that things are being requested
       console.log("Starting to request the ride for position: ", rt_location['position']);
-      //sleep(2000);
       alert("Starting the request flow and writing into the ETH contract");
       sleep(1000);
 
-
-      that.state.mobilityMarketInstance.addRideRequest(Math.round(rt_location['position']), Math.round(rt_location['position'][0]),
+      that.state.mobilityMarketInstance.addRideRequest(Math.round(rt_location['position'][1]), Math.round(rt_location['position'][0]),
           dest_lat,dest_lng, {from: that.state.accounts[0], gas: 1000000});
 
-
-
-      // Listen to changes
-      // TODO 
-
-      // Display the correct match
-      var eta_minutes = 2.4;
     }
 
   _updateViewport = (viewport) => {
@@ -225,14 +216,17 @@ class App extends Component {
           hideOnOverlayClicked ref={ref => this.simpleDialog1 = ref} title=""
           afterClose={() => this.simpleDialog2.show()}
           dialogStyles={dialog} >
-          <img src="push.png" alt="miles"/>
+          <button onClick={() => this.simpleDialog2.show()}><img src="push.png" alt="miles"/></button>
         </SkyLight>
         
-        <SkyLight afterClose={() => this.simpleDialog3.show()} dialogStyles={dialog}  hideOnOverlayClicked ref={ref => this.simpleDialog2 = ref} title="">
-          <img src="collect.png" alt="miles"/>
+        <SkyLight dialogStyles={dialog}  hideOnOverlayClicked ref={ref => this.simpleDialog2 = ref} title="">
+          <img src="top.png" alt="miles"/>
+          <button onClick={() => this.simpleDialogUber.show()}><img src="uber.png" alt="miles"/></button>
+          <button onClick={() => this.simpleDialogLyft.show()}><img src="lyft.png" alt="miles"/></button>
+          <img src="low.png" alt="miles"/>
         </SkyLight>
         
-        <SkyLight afterClose={() =>this.simpleDialog4.show()} dialogStyles={dialog}  hideOnOverlayClicked ref={ref => this.simpleDialog3 = ref} title="">
+        <SkyLight afterClose={() =>this.simpleDialogMiles.show()} dialogStyles={dialog}  hideOnOverlayClicked ref={ref => this.simpleDialogLyft = ref} title="">
           <svg width="375px" height="667px" viewBox="0 0 375 667" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">\
           <desc>Created with Sketch.</desc>\
           <defs></defs>\
@@ -244,8 +238,13 @@ class App extends Component {
           </svg>
         </SkyLight>
         
-        <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog4 = ref} dialogStyles={dialog}  title="">
-          <img src="miles.png" alt="miles"/>
+        <SkyLight afterClose={() =>this.simpleDialogMiles.show()} hideOnOverlayClicked ref={ref => this.simpleDialogUber = ref} dialogStyles={dialog}  title="">
+          <button onClick={() => this.simpleDialogMiles.show()}><img src="uberchoice.png" alt="miles"/></button>
+        </SkyLight>
+
+
+        <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialogMiles = ref} dialogStyles={dialog}  title="">
+          <button onClick={() => this.simpleDialogMiles.show()}><img src="miles.png" alt="miles"/></button>
         </SkyLight>
 
         <div className="App-header">
