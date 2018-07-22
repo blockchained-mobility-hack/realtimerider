@@ -39,6 +39,7 @@ contract MobilityMarket {
 
     event RequestAdded(address indexed from, uint destLat, uint destLong, uint startLat, uint startLong, uint id);
     event ProposalAdded(uint requestId, uint proposalId, address provider, uint tokenAmount);
+    event MatchMade(uint tokenAmount);
 
     function addRideRequest(uint8 destLat, uint8 destLong, uint8 startLat, uint8 startLong) public returns (uint requestId) {
         requestId = numRequests++;
@@ -82,6 +83,8 @@ contract MobilityMarket {
             tokenAmount: tokenAmount
             });
 
-        tokenContract.transferFrom(provider, rider, tokenAmount);
+        //tokenContract.transferFrom(provider, rider, tokenAmount);
+
+        emit MatchMade(tokenAmount);
     }
 }
