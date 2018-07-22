@@ -80,30 +80,27 @@ function sleep(milliseconds) {
 }
 
 function AppFlow(flowstatus) {
-    console.log("Flowstatus" + flowstatus)
-         if (flowstatus === "stage2") {
-            return 
+    console.log("Flowstatus" + JSON.stringify(flowstatus));
+         if (flowstatus.flowstatus == 1) {
+            return (
                 <div>
-                    <img src="top.png" alt="miles"/>
-                    <img src="uber.png" alt="miles"/>
-                    
-                    <img src="lyft.png" alt="miles"/>
-                    <img src="low.png" alt="miles"/>
-                </div>
-          } else if (flowstatus === "stage3") {
-            return 
+                    <img src="collect.png" />
+                </div>)
+          } else if (flowstatus.flowstatus == 2) {
+            return (
                 <div>
                     <img src="uberchoice.png" alt="miles"/>
-                </div>
-          } else if (flowstatus === "stage4") {
-            return 
+                </div>)
+          } else if (flowstatus.flowstatus  == 3) {
+            return (
                 <div>
                     <img src="miles.png" alt="miles"/>
-                </div>
-          }
-          return <div>
+                </div>)
+          } else {
+          return (<div>
                     <img src="push.png" alt="miles"/>
-                </div>;
+                </div>)
+            }
     }
 
 class Alternative extends Component {
@@ -119,8 +116,12 @@ class Alternative extends Component {
             requestId: null,
             proposals: [],
             tokenBalance: null,
-            flowstatus: 'stage1'
+            flowstatus: 0
         }
+    }
+
+    _increaseStage() {
+        this.setState({flowstatus: this.state.flowstatus+1});
     }
 
     _start_request_flow(that) {
@@ -131,7 +132,7 @@ class Alternative extends Component {
 
         that.state.mobilityMarketInstance.addRideRequest(Math.round(rt_location['position'][1]), Math.round(rt_location['position'][0]),
             dest_lat,dest_lng, {from: that.state.accounts[0], gas: 1000000});
-
+       
     }
 
     _confirmRide(proposalId, requestId) {
@@ -359,6 +360,8 @@ class Alternative extends Component {
                     </Box>
                     <Box px={2} w={1/2}>
                         <button onClick={() => {
+                            
+                            this._increaseStage();
                             this._start_request_flow();
                             //this.simpleDialog1.show();
                         }}>Start flow</button>
