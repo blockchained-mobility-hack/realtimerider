@@ -98,6 +98,12 @@ class App extends Component {
 
     }
 
+  _chooseProvider = (provider_choice) => {
+      alert("Chosen provider " + provider_choice + " with award amount: NA");
+
+  }
+
+
   _updateViewport = (viewport) => {
       const {latitude, longitude, zoom} = viewport;
       var data = {zoom: zoom, latitude: latitude, longitude: longitude};
@@ -171,6 +177,7 @@ class App extends Component {
                   var proposalId = result.args['proposalId'];
 
                   // Missing UI selection
+
                   that.state.mobilityMarketInstance.submitProposal(requestId, proposalId, {
                       from: that.state.accounts[1],
                       gas: 1000000
@@ -221,8 +228,15 @@ class App extends Component {
         
         <SkyLight dialogStyles={dialog}  hideOnOverlayClicked ref={ref => this.simpleDialog2 = ref} title="">
           <img src="top.png" alt="miles"/>
-          <button onClick={() => this.simpleDialogUber.show()}><img src="uber.png" alt="miles"/></button>
-          <button onClick={() => this.simpleDialogLyft.show()}><img src="lyft.png" alt="miles"/></button>
+          <button onClick={() => {
+            this._chooseProvider('uber');
+            this.simpleDialogUber.show()
+
+          }}><img src="uber.png" alt="miles"/></button>
+          <button onClick={() => {
+            this._chooseProvider('lyft');
+            this.simpleDialogLyft.show()
+          }}><img src="lyft.png" alt="miles"/></button>
           <img src="low.png" alt="miles"/>
         </SkyLight>
         
