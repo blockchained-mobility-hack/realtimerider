@@ -18,7 +18,7 @@ Install react libraries via
 
 ## Authors
 
-* **Nikolaus Volk** - *Initial work* - [PurpleBooth](https://github.com/sktnikolaus)
+* **Nikolaus Volk** - *Initial work* - [sktnikolaus](https://github.com/sktnikolaus)
 
 * **Sebastian Appelt** - *Initial work* - [BigVibez](
 https://github.com/bigvibez)
