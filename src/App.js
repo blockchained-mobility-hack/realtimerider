@@ -166,6 +166,8 @@ class App extends Component {
                           gas: 1000000
                       });
                   }
+
+
               });
 
               var proposalAddedEvent = mobilityMarketInstance.ProposalAdded({});
@@ -175,10 +177,10 @@ class App extends Component {
                   var provider = result.args['provider'];
                   var tokenAmount = result.args['tokenAmount']['c'][0];
                   var requestId = result.args['requestId']['c'][0];
-                  var providerId = result.args['proposalId'];
+                  var proposalId = result.args['proposalId'];
 
                   // Missing UI selection
-                  that.state.mobilityMarketInstance.submitProposal(requestId, providerId, {
+                  that.state.mobilityMarketInstance.submitProposal(requestId, proposalId, {
                       from: that.state.accounts[1],
                       gas: 1000000
                   });
