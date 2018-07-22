@@ -294,9 +294,17 @@ class Alternative extends Component {
             <div>
                 <ul>
                 {proposals.map(proposal => (
-                    <li key={proposal.proposalId}>{proposal.providerName}: {proposal.tokenAmount}
-                        &nbsp;<Button onClick={() => this._confirmRide(proposal.proposalId, proposal.requestId)}>Confirm</Button>
-                    </li>
+
+                    <Flex p={2} align='top' >
+                        <Box px={2} w={1/2}>
+                            <div key={proposal.proposalId}>
+                                {proposal.providerName}: {proposal.tokenAmount}
+                            </div>
+                        </Box>
+                        <Box px={2} w={1/2}>
+                            <Button onClick={() => this._confirmRide(proposal.proposalId, proposal.requestId)}>Confirm</Button>
+                        </Box>
+                    </Flex>
                 ))}
                 </ul>
             </div>
@@ -362,7 +370,7 @@ class Alternative extends Component {
                         <button onClick={() => {
                             
                             this._increaseStage();
-                            this._start_request_flow();
+                            this._start_request_flow(this);
                             //this.simpleDialog1.show();
                         }}>Start flow</button>
 

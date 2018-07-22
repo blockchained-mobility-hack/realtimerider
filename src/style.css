@@ -32,5 +32,10 @@ body {
   font-family: sans-serif;
 }
 
-.half
+.half {
   width: 50%
+}
+
+li {
+  list-style-type: none;
+}
