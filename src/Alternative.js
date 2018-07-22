@@ -369,8 +369,13 @@ class Alternative extends Component {
                     <Box px={2} w={1/2}>
                         <button onClick={() => {
                             
-                            this._increaseStage();
-                            this._start_request_flow(this);
+                            
+                            if (this.state.flowstatus == 0) {
+                                this._increaseStage();
+                                this._start_request_flow(this);
+                            } else {
+                                this._increaseStage();
+                            }
                             //this.simpleDialog1.show();
                         }}>Next screen </button>
 
