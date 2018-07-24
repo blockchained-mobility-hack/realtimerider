@@ -20,8 +20,8 @@ Install react libraries via
 
 * **Nikolaus Volk** - *Initial work* - [sktnikolaus](https://github.com/sktnikolaus)
 
-* **Sebastian Appelt** - *Initial work* - [BigVibez](
-https://github.com/bigvibez)
+* **Sebastian Appelt** - *Initial work* - [sappelt](
+https://github.com/sappelt)
 
 See also the list of [contributors](https://github.com/blockchained-mobility-hack/realtimerider/contributors) who participated in this project.
 
